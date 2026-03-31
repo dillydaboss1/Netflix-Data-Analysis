@@ -127,3 +127,33 @@ JOIN users u
 ON w.user_id = u.user_id
 GROUP BY u.subscription_plan
 ORDER BY avg_completion DESC;
+-- 8. User activity vs Engagement 
+SELECT
+  activity_level,
+  COUNT(*) AS user_count,
+  ROUND(AVG(total_sessions), 2) AS avg_sessions,
+  ROUND(AVG(avg_watch_minutes), 2) AS avg_watch_minutes,
+  ROUND(AVG(avg_progress), 2) AS avg_progress,
+  ROUND(AVG(completed_sessions), 2) AS avg_completed_sessions
+FROM (
+  SELECT
+    user_id,
+    COUNT(*) AS total_sessions,
+    AVG(watch_duration_minutes) AS avg_watch_minutes,
+    AVG(progress_percentage) AS avg_progress,
+    SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completed_sessions,
+    CASE
+      WHEN COUNT(*) >= 20 THEN 'High Activity'
+      WHEN COUNT(*) >= 10 THEN 'Medium Activity'
+      ELSE 'Low Activity'
+    END AS activity_level
+  FROM watch_history
+  GROUP BY user_id
+) user_metrics
+GROUP BY activity_level
+ORDER BY
+  CASE
+    WHEN activity_level = 'High Activity' THEN 1
+    WHEN activity_level = 'Medium Activity' THEN 2
+    ELSE 3
+  END;
