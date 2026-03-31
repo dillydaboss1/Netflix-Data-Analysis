@@ -79,6 +79,5 @@ Tables used:
 ---
 
 ## Next Steps
-- resolve duplicate user records  
-- extend analysis into churn prediction  
+- resolve duplicate user records
 - add visualisations using Python  
