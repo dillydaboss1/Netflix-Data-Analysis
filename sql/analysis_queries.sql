@@ -64,7 +64,8 @@ FROM (
 GROUP BY activity_level, engagement_quality
 ORDER BY activity_level, engagement_quality;
 
--- 4. Genre analysis
+-- 4. Content analysis
+-- Genre analysis
 
 SELECT
     m.genre_primary,
@@ -88,7 +89,7 @@ ON w.movie_id = m.movie_id
 GROUP BY m.genre_primary
 ORDER BY total_views DESC;
 
--- 5. Content type analysis
+-- Content type analysis
 
 SELECT
     m.content_type,
@@ -100,7 +101,7 @@ ON w.movie_id = m.movie_id
 GROUP BY m.content_type
 ORDER BY avg_completion DESC;
 
--- 6. Duration analysis
+-- Duration analysis
 
 SELECT
     CASE
@@ -116,7 +117,7 @@ ON w.movie_id = m.movie_id
 GROUP BY duration_category
 ORDER BY avg_completion DESC;
 
--- 7. Subscription plan analysis (user segmentation)
+-- 5. Subscription plan analysis (user segmentation)
 
 SELECT
     u.subscription_plan,
@@ -127,7 +128,7 @@ JOIN users u
 ON w.user_id = u.user_id
 GROUP BY u.subscription_plan
 ORDER BY avg_completion DESC;
--- 8. User activity vs Engagement 
+-- 6. User activity vs Engagement 
 SELECT
   activity_level,
   COUNT(*) AS user_count,
@@ -157,3 +158,27 @@ ORDER BY
     WHEN activity_level = 'Medium Activity' THEN 2
     ELSE 3
   END;
+  
+-- 7. Churn / Risk Segmentation Analysis
+SELECT
+  churn_risk,
+  activity_level,
+  COUNT(*) AS user_count
+FROM (
+  SELECT
+    user_id,
+    CASE
+      WHEN COUNT(*) >= 20 THEN 'High Activity'
+      WHEN COUNT(*) >= 10 THEN 'Medium Activity'
+      ELSE 'Low Activity'
+    END AS activity_level,
+    CASE
+      WHEN AVG(progress_percentage) < 45 THEN 'High Risk'
+      WHEN AVG(progress_percentage) BETWEEN 45 AND 55 THEN 'Medium Risk'
+      ELSE 'Low Risk'
+    END AS churn_risk
+  FROM watch_history
+  GROUP BY user_id
+) t
+GROUP BY churn_risk, activity_level
+ORDER BY churn_risk, activity_level;
