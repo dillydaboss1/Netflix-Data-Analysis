@@ -115,7 +115,29 @@ Subscription level does not significantly influence engagement.
 
 ---
 
-## 5. Final Conclusion
+## 5. Activity vs Engagement Analysis
+
+User activity levels were analysed to determine whether higher activity leads to stronger engagement.
+
+While session frequency increases significantly across activity levels, average watch duration and completion rates remain consistent:
+
+- High Activity → avg_progress: 49.64%
+- Medium Activity → avg_progress: 50.14%
+- Low Activity → avg_progress: 49.65%
+
+Similarly, average watch time per session remains stable (~65 minutes) across all groups.
+
+This indicates that higher activity does not translate to stronger engagement, but instead reflects increased usage frequency.
+
+### Key Insight
+User activity level is not a meaningful driver of engagement quality. Users who interact more frequently do not demonstrate higher completion rates or deeper content consumption.
+
+### Limitation
+Completion rates remain tightly clustered around ~50% across all segments, suggesting potential limitations in the dataset or metric sensitivity. This may reduce the ability to detect more nuanced behavioural differences.
+
+---
+
+## 6. Final Conclusion
 
 Engagement remains stable across all tested variables, including genre, content type, duration, and subscription plan.
 
@@ -123,7 +145,7 @@ Content characteristics are not primary drivers of engagement. User behaviour is
 
 ---
 
-## 6. Business Implications
+## 7. Business Implications
 
 Improving engagement should focus on:
 - personalised recommendations
